@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <title>Todo app</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-theme">
+  <div class="background"></div>
+  <header class="container">
+    <a href="#" class="logo">Todo</a>
+
+    <img id="themeToggle" src="./images/icon-sun.svg" alt="Moon">
+  </header>
+
+  <section class="container">
+    <form id="form">
+      <span class="circle"></span>
+      <p id="typing">Currently typing</p>
+      
+      <input type="text" id="input" placeholder="Create a new todo..." autocomplete="off">
+    </form>
+
+    <div class="list-wrapper">
+      <ul id="list">
+        <!-- List items go here -->
+        <li>Complate online course</li>
+        <li>Complate online course</li>
+  
+      </ul>
+      <div class="filters">
+        <p class="items-left">
+          5 items left
+        </p>
+
+        <div class="filter-btns">
+          <button type="button" class="btnT" class="active">All</button>
+          <button type="button" class="btnT">Active</button>
+          <button type="button" class="btnT">Completed</button>
+        </div>
+
+        <button type="button" class="btnT" id="clearCompleted">Clear completed</button>
+      </div>
+
+    </div>
+
+  </section>
+    
+    <script src="main.js"></script>
+</body>
+</html>

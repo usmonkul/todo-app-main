@@ -1,0 +1,145 @@
+*, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    transition: background 0.3s, color 0.3s;
+}
+.background {
+    background-image: url("./images/bg-desktop-dark.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100vw;
+    height: 35vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+/* Light Theme */
+.light-theme {
+    background: #f5f5f5;
+    color: #333;
+}
+
+/* Dark Theme */
+.dark-theme {
+    background: #222;
+    color: #fff;
+}
+
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5rem 0;
+}
+
+.logo {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 5px;
+}
+#theme-toggle {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    color: transparent
+}
+
+#form {
+    background-color: hsl(235, 21%, 11%);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.circle {
+    background-color: transparent;
+    border: 1px solid hsl(235, 24%, 19%);
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#typing {
+    color: white;
+    display: none;
+}
+
+#input {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: white;
+}
+.list-wrapper {
+    background-color: hsl(235, 21%, 11%);
+    border-radius: 10px;
+    margin-top: 1.5rem;
+}
+
+#list {
+
+    display: flex;
+    flex-direction: column;
+}
+
+#list > li {
+    list-style: none;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid hsl(235, 24%, 19%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+
+}
+
+.removeBtn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    color:hsl(234, 39%, 85%);
+}
+.filter-btns {
+    display: flex;
+    gap: 1rem;
+}
+.btnT {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: hsl(237, 14%, 26%)
+}
+
+.btnT:hover {
+    color: hsl(236, 33%, 92%);
+}
+
+.btnT:active {
+    color: hsl(220, 98%, 61%);
+}
