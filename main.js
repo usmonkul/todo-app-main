@@ -1,35 +1,14 @@
-let inputValue = document.getElementById('input');
-let list = document.getElementById('list');
-let typing = document.getElementById('typing');
-let allTasks = document.getElementById('allTasks');
-let activeTasks = document.getElementById('activeTasks');
-let completedTasks = document.getElementById('completedTasks');
-let clearCompleted = document.getElementById('clearCompleted');
-let theme = document.getElementById('theme');
-let itemsLeft = document.getElementById('items-left');
+const inputValue = document.getElementById('input');
+const list = document.getElementById('list');
+const typing = document.getElementById('typing');
+const allTasks = document.getElementById('allTasks');
+const activeTasks = document.getElementById('activeTasks');
+const completedTasks = document.getElementById('completedTasks');
+const clearCompleted = document.getElementById('clearCompleted');
+const theme = document.getElementById('theme');
+const itemsLeft = document.getElementById('items-left');
 const themeToggle = document.getElementById("themeToggle");
 const body = document.body;
-
-// Check if the user has a saved theme preference
-if (localStorage.getItem("theme") === "dark") {
-    body.classList.add("dark-theme");
-}
-
-// Toggle theme on button click
-themeToggle.addEventListener("click", () => {
-    if (body.classList.contains("dark-theme")) {
-        themeToggle.src = "./images/icon-moon.svg";
-    } else {
-        themeToggle.src = "./images/icon-sun.svg";
-    }
-
-    body.classList.toggle("dark-theme");
-    body.classList.toggle("light-theme");
-
-    // Save user preference in localStorage
-    const theme = body.classList.contains("dark-theme") ? "dark" : "light";
-    localStorage.setItem("theme", theme);
-});
 
 let toDoes = [
     {
@@ -40,36 +19,36 @@ let toDoes = [
         task: 'Jog around the park 3x',
         isCompleted: false
     }
-]
+];
 
-function removeTask() {
-    list.removeChild(list.lastChild);
+
+// Check if the user has a saved theme preference
+if (localStorage.getItem("theme") === "dark") {
+    body.classList.add("dark-theme");
 }
 
-function addTask() {
-    let task = inputValue.value;
-    if (task === '') {
-        alert('Please enter a task');
-        return;
-    }
-    toDoes.push({
-        task: task,
-        isCompleted: false
-    });
-    inputValue.value = '';
-    renderToDoes();
+// Toggle theme on button click
+themeToggle.addEventListener("click", () => {
+    const isDarkTheme = body.classList.toggle("dark-theme");
+    body.classList.toggle("light-theme", !isDarkTheme);
+    themeToggle.src = isDarkTheme ? "./images/icon-sun.svg" : "./images/icon-moon.svg";
+    localStorage.setItem("theme", isDarkTheme ? "dark" : "light");
+});
+
+function updateItemsLeft() {
+    itemsLeft.textContent = `${toDoes.filter(toDo => !toDo.isCompleted).length} items left`;
 }
 
-function createToDoes(toDo, index) {
-    let li = document.createElement('li');
-    let span = document.createElement('span');
-    let label = document.createElement('label');
-    let removeBtn = document.createElement('button');
-    let removeBtnImg = document.createElement('img');
-    let checkedImage = document.createElement('img');
+function createToDoElement(toDo, index) {
+    const li = document.createElement('li');
+    const span = document.createElement('span');
+    const label = document.createElement('label');
+    const removeBtn = document.createElement('button');
+    const removeBtnImg = document.createElement('img');
+    const checkedImage = document.createElement('img');
+
     checkedImage.src = './images/icon-check.svg';
     checkedImage.className = 'checkedImage';
-
     removeBtn.className = 'removeBtn';
     removeBtnImg.src = './images/icon-cross.svg';
     removeBtn.appendChild(removeBtnImg);
@@ -81,28 +60,50 @@ function createToDoes(toDo, index) {
         li.style.textDecoration = 'line-through';
         li.style.color = 'hsl(234, 11%, 52%)';
     }
-    span.onclick = function () {
-        toDoes[index].isCompleted  = !toDoes[index].isCompleted;
+    span.onclick = () => {
+        toDoes[index].isCompleted = !toDoes[index].isCompleted;
         renderToDoes();
-    }
+    };
     li.appendChild(span);
     label.textContent = toDo.task;
     li.appendChild(label);
 
-    removeBtn.onclick = function () {
+    removeBtn.onclick = () => {
         toDoes.splice(index, 1);
         renderToDoes();
-    }
+    };
     li.appendChild(removeBtn);
-    list.appendChild(li);
+
+    return li;
 }
 
-function renderToDoes() {
+function renderToDoes(filter = () => true) {
     list.innerHTML = '';
-    toDoes.forEach((toDo, index) => {
-        createToDoes(toDo, index);
+    const fragment = document.createDocumentFragment();
+    toDoes.filter(filter).forEach((toDo, index) => {
+        fragment.appendChild(createToDoElement(toDo, index));
     });
+    list.appendChild(fragment);
+    updateItemsLeft();
 }
+
+function addTask() {
+    const task = inputValue.value.trim();
+    if (task === '') {
+        alert('Please enter a task');
+        return;
+    }
+    toDoes.push({ task, isCompleted: false });
+    inputValue.value = '';
+    renderToDoes();
+}
+
+
+
+function removeTask() {
+    list.removeChild(list.lastChild);
+}
+
 
 function clearCompletedTasks() {
     toDoes = toDoes.filter(toDo => !toDo.isCompleted);
@@ -120,103 +121,20 @@ function showActiveTasks() {
     allTasks.style.color = 'hsl(234, 11%, 52%)';
     activeTasks.style.color = 'hsl(220, 98%, 61%)';
     completedTasks.style.color = 'hsl(234, 11%, 52%)';
-    list.innerHTML = '';
-    toDoes.forEach((toDo, index) => {
-        if (!toDo.isCompleted) {
-            let li = document.createElement('li');
-            let span = document.createElement('span');
-            let label = document.createElement('label');
-            let removeBtn = document.createElement('button');
-            let removeBtnImg = document.createElement('img');
-            let checkedImage = document.createElement('img');
-            checkedImage.src = './images/icon-check.svg';
-            checkedImage.className = 'checkedImage';
-
-            removeBtn.className = 'removeBtn';
-            removeBtnImg.src = './images/icon-cross.svg';
-            removeBtn.appendChild(removeBtnImg);
-
-            span.className = 'circle';
-            if (toDo.isCompleted) {
-                span.appendChild(checkedImage);
-                span.style.background = "linear-gradient(to right, hsl(192, 100%, 67%), hsl(280, 87%, 65%))";
-                li.style.textDecoration = 'line-through';
-                li.style.color = 'hsl(234, 11%, 52%)';
-            }
-            span.onclick = function () {
-                toDoes[index].isCompleted  = !toDoes[index].isCompleted;
-                renderToDoes();
-            }
-            li.appendChild(span);
-            label.textContent = toDo.task;
-            li.appendChild(label);
-
-            removeBtn.onclick = function () {
-                toDoes.splice(index, 1);
-                renderToDoes();
-            }
-            li.appendChild(removeBtn);
-            list.appendChild(li);
-        }
-    });
+    renderToDoes(toDo => !toDo.isCompleted);
 }
-function showComplatedTasks() {
+
+function showCompletedTasks() {
     allTasks.style.color = 'hsl(234, 11%, 52%)';
     activeTasks.style.color = 'hsl(234, 11%, 52%)';
     completedTasks.style.color = 'hsl(220, 98%, 61%)';
-    list.innerHTML = '';
-    toDoes.forEach((toDo, index) => {
-        if (toDo.isCompleted) {
-            let li = document.createElement('li');
-            let span = document.createElement('span');
-            let label = document.createElement('label');
-            let removeBtn = document.createElement('button');
-            let removeBtnImg = document.createElement('img');
-            let checkedImage = document.createElement('img');
-            checkedImage.src = './images/icon-check.svg';
-            checkedImage.className = 'checkedImage';
-
-            removeBtn.className = 'removeBtn';
-            removeBtnImg.src = './images/icon-cross.svg';
-            removeBtn.appendChild(removeBtnImg);
-
-            span.className = 'circle';
-            if (toDo.isCompleted) {
-                span.appendChild(checkedImage);
-                span.style.background = "linear-gradient(to right, hsl(192, 100%, 67%), hsl(280, 87%, 65%))";
-                li.style.textDecoration = 'line-through';
-                li.style.color = 'hsl(234, 11%, 52%)';
-            }
-            span.onclick = function () {
-                toDoes[index].isCompleted  = !toDoes[index].isCompleted;
-                renderToDoes();
-            }
-            li.appendChild(span);
-            label.textContent = toDo.task;
-            li.appendChild(label);
-
-            removeBtn.onclick = function () {
-                toDoes.splice(index, 1);
-                renderToDoes();
-            }
-            li.appendChild(removeBtn);
-            list.appendChild(li);
-        }
-    });
+    renderToDoes(toDo => toDo.isCompleted);
 }
-
-
-
-renderToDoes();
-
 
 clearCompleted.onclick = clearCompletedTasks;
 allTasks.onclick = showAllTasks;
 activeTasks.onclick = showActiveTasks;
-completedTasks.onclick = showComplatedTasks;
-
-itemsLeft.textContent = toDoes.filter(toDo => !toDo.isCompleted).length + ' items left';
-
+completedTasks.onclick = showCompletedTasks;
 
 inputValue.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
@@ -226,9 +144,7 @@ inputValue.addEventListener("keypress", (event) => {
 });
 
 inputValue.addEventListener("input", () => {
-    if (inputValue.value === '') {
-        typing.style.display = 'none';
-    } else {
-        typing.style.display = 'block';
-    }
+    typing.style.display = inputValue.value === '' ? 'none' : 'block';
 });
+
+renderToDoes();
