@@ -8,6 +8,7 @@ const clearCompleted = document.getElementById('clearCompleted');
 const theme = document.getElementById('theme');
 const itemsLeft = document.getElementById('items-left');
 const themeToggle = document.getElementById("themeToggle");
+const background = document.getElementById('background');
 const body = document.body;
 
 let toDoes = [
@@ -32,6 +33,7 @@ themeToggle.addEventListener("click", () => {
     const isDarkTheme = body.classList.toggle("dark-theme");
     body.classList.toggle("light-theme", !isDarkTheme);
     themeToggle.src = isDarkTheme ? "./images/icon-sun.svg" : "./images/icon-moon.svg";
+    background.style.backgroundImage = isDarkTheme ? "url('./images/bg-desktop-dark.jpg')" : "url('./images/bg-desktop-light.jpg')";
     localStorage.setItem("theme", isDarkTheme ? "dark" : "light");
 });
 
